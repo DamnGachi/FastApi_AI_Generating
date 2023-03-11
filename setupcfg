@@ -1,0 +1,76 @@
+[isort]
+# Isort configuration:
+line_length = 70
+multi_line_output = 3
+use_parentheses = true
+include_trailing_comma = true
+extend_skip = migrations/versions
+
+
+[darglint]
+# Darglint configuration:
+strictness = long
+docstring-style = numpy
+
+
+[flake8]
+# Base flake8 configuration:
+format = wemake
+doctests = true
+show-source = true
+statistics = false
+
+# Plugins:
+max-arguments = 10
+min-name-length = 1
+max-expressions = 15
+max-line-length = 80
+max-string-usages = 10
+max-line-complexity = 20
+
+# Self settings:
+i-control-code = false
+extend-immutable-calls = Depends
+nested-classes-whitelist = Meta, Params, Config
+
+# Excluding some directories:
+exclude =
+  .git
+  .venv
+  .idea
+  .vscode
+  .mypy_cache
+  __pycache__
+  migrations/versions
+
+# Violations:
+ignore = D100, D101, D102, D103, D104, D105, D106, D107, WPS354, WPS404, WPS432
+per-file-ignores =
+  response*: WPS114
+  settings*: WPS115
+  __init__.py: WPS300, F401
+  pkg/rabbitmq/rpc/routing.py: S101
+
+
+[mypy]
+# Mypy configuration:
+python_version = 3.10
+exclude = cmd|migrations|tests
+check_untyped_defs = true
+allow_redefinition = false
+disallow_any_generics = true
+disallow_any_explicit = false
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+ignore_errors = false
+ignore_missing_imports = true
+implicit_reexport = false
+no_implicit_optional = true
+strict_optional = true
+strict_equality = true
+local_partial_types = true
+warn_no_return = true
+warn_unreachable = true
+warn_unused_ignores = true
+warn_unused_configs = true
+warn_redundant_casts = true

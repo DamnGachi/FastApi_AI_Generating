@@ -1,0 +1,55 @@
+version: '3.9'
+services:
+
+  db:
+    container_name: fastapi_clean_db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    image: postgres:14-alpine
+    networks:
+      - network
+    ports:
+      - ${HOST_DB_PORT}:${DB_PORT}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  migration:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.migration
+    container_name: fastapi_clean_migration
+    depends_on:
+      - db
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - network
+
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+    container_name: fastapi_clean_backend
+    depends_on:
+      - db
+      - migration
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - network
+      - rabbitmq
+    ports:
+      - ${HOST_ADMIN_PORT}:${ADMIN_PORT}
+      - ${HOST_BACKEND_PORT}:${BACKEND_PORT}
+
+networks:
+  network:
+    driver: bridge
+  rabbitmq:
+    name: rabbitmq
+    external: true
+
+volumes:
+  db_data:
