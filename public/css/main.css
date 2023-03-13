@@ -1,0 +1,108 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #333;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+}
+
+header h1 {
+  margin: 0;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav li {
+  margin-right: 20px;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Main content styles */
+main {
+  color: #ffffff;
+  background-color: #333;
+  padding: 20px;
+}
+
+/* Footer styles */
+footer {
+  background-color: #333;
+  color: #fff;
+  height: 10%;
+  padding: 600px;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dalle-input {
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  /* align form to the bottom */
+  height: 100%;
+  /* set the height of the parent container */
+
+
+  bottom: 0;
+  /* align the bottom edge of the form with the bottom of the page */
+  width: 90%;
+  /* make the form fill the entire width of the page */
+  padding: 20px;
+  /* add some padding to the form */
+}
+
+input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 300px;
+}
+
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.profile-link {
+  display: inline-block;
+  margin-left: auto;
+  /* push to the right side */
+  font-size: 16px;
+  color: #333;
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 2px solid #333;
+  border-radius: 20px;
+}

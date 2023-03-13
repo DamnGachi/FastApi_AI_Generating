@@ -1,9 +1,3 @@
-from pkg.rabbitmq.rpc import RPCRouter
-
-from . import applications
-
-router = RPCRouter()
-router.include_router(
-    applications.router,
-    prefix='/applications',
-)
+from .datatypes import PhoneStr
+from .errors import PhoneError
+from .validators import validate_phone

@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 from typing import Any, AsyncContextManager, AsyncGenerator, Callable
 
 from sqlalchemy import create_engine, orm
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine,async_sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 
 from internal.config import settings
 from internal.entity.base import Base
@@ -13,7 +13,9 @@ AsyncSessionGenerator = AsyncGenerator[AsyncSession, None]
 
 async def create_database(url: str) -> None:
     engine = create_async_engine(
-        url, pool_pre_ping=True, future=True,
+        url,
+        pool_pre_ping=True,
+        future=True,
     )
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
@@ -21,13 +23,21 @@ async def create_database(url: str) -> None:
     await engine.dispose()
 
 
-def async_session(url: str, *, wrap: Callable[..., Any] | None = None,
+def async_session(
+    url: str,
+    *,
+    wrap: Callable[..., Any] | None = None,
 ) -> Callable[..., AsyncSessionGenerator] | AsyncContextManager[Any]:
     engine = create_async_engine(
-        url, pool_pre_ping=True, future=True,
+        url,
+        pool_pre_ping=True,
+        future=True,
     )
     factory = async_sessionmaker(
-        engine, class_=AsyncSession, autoflush=False, expire_on_commit=False,
+        engine,
+        class_=AsyncSession,
+        autoflush=False,
+        expire_on_commit=False,
     )
 
     async def get_session() -> AsyncSessionGenerator:  # noqa: WPS430, WPS442
@@ -39,15 +49,18 @@ def async_session(url: str, *, wrap: Callable[..., Any] | None = None,
 
 def sync_session(url: str) -> orm.scoped_session:
     engine = create_engine(
-        url, pool_pre_ping=True, future=True,
+        url,
+        pool_pre_ping=True,
+        future=True,
     )
     factory = orm.sessionmaker(
-        engine, autoflush=False, expire_on_commit=False,
+        engine,
+        autoflush=False,
+        expire_on_commit=False,
     )
     return orm.scoped_session(factory)
 
 
 override_session = get_session, async_session(settings.DATABASE_URI)
-current_session = sync_session(settings.DATABASE_URI.replace('+asyncpg', ''))
-context_session = async_session(
-    settings.DATABASE_URI, wrap=asynccontextmanager)
+current_session = sync_session(settings.DATABASE_URI.replace("+asyncpg", ""))
+context_session = async_session(settings.DATABASE_URI, wrap=asynccontextmanager)
