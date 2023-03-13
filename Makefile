@@ -1,9 +1,9 @@
 ifneq ($(wildcard docker/.env.example),)
 	ENV_FILE = .env.example
 endif
-ifneq ($(wildcard .env.example),)
+ifneq ($(wildcard .env),)
 	ifeq ($(COMPOSE_PROJECT_NAME),)
-		include .env.example
+		include .env
 	endif
 endif
 ifneq ($(wildcard docker/.env),)
@@ -40,12 +40,11 @@ run: ## Run applications
 
 .PHONY: run-admin
 run-admin: ## Run admin
-	poetry run gunicorn --reload --bind $(HOST):$(ADMIN_PORT) \
-	--workers $(WORKERS) --log-level $(LEVEL) --chdir cmd/admin main:app
+	poetry run gunicorn --reload --bind $(HOST):$(ADMIN_PORT) --workers $(WORKERS) --log-level $(LEVEL) --chdir cmd/admin main:app
 
 .PHONY: run-backend
 run-backend: ## Run backend
-	poetry run gunicorn --reload --bind $(HOST):$(BACKEND_PORT) \
+	poetry run gunicorn --reload --bind $(localhost):$(BACKEND_PORT) \
 	--worker-class uvicorn.workers.UvicornWorker \
 	--workers $(WORKERS) --log-level $(LEVEL) --chdir cmd/app main:app
 

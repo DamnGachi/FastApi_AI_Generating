@@ -6,18 +6,15 @@ from fastapi import Depends
 from pytorm.repository import InjectRepository
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from internal.dto.application import (
-    ApplicationFilter,
-    BaseApplication,
-)
+from internal.dto.application import ApplicationFilter, BaseApplication
 from internal.entity.application import Application
 from internal.usecase.utils import get_session
 
 
 class ApplicationService(object):
-
     def __init__(
-        self, session: AsyncSession = Depends(get_session),
+        self,
+        session: AsyncSession = Depends(get_session),
     ) -> None:
         self.repository = InjectRepository(Application, session)
 
@@ -34,7 +31,8 @@ class ApplicationService(object):
 
     async def find_one_or_fail(self, application_id: uuid.UUID) -> Application:
         return await self.repository.find_one_or_fail(
-            Application.deleted_at.is_(None), id=application_id,
+            Application.deleted_at.is_(None),
+            id=application_id,
         )
 
     async def delete(self, application_id: uuid.UUID) -> Application:

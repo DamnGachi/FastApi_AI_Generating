@@ -1,22 +1,25 @@
 import uuid
 from typing import Any
 
-from fastapi import APIRouter, Depends, status
-from fastapi_pagination import Page, Params, paginate
+from fastapi import APIRouter
+from fastapi import Depends
+from fastapi import status
+from fastapi_pagination import Page
+from fastapi_pagination import paginate
+from fastapi_pagination import Params
 
-from internal.dto.application import (
-    ApplicationFilter,
-    ApplicationRead,
-    BaseApplication,
-)
+from internal.dto.application import ApplicationFilter
+from internal.dto.application import ApplicationRead
+from internal.dto.application import BaseApplication
 from internal.entity.application import Application
 from internal.service.application import ApplicationService
-from internal.usecase.utils import SuccessfulResponse, response
+from internal.usecase.utils import response
+from internal.usecase.utils import SuccessfulResponse
 
 router = APIRouter()
 
 
-@router.get('', response_model=Page[ApplicationRead])
+@router.get("", response_model=Page[ApplicationRead])
 async def read_applications(
     dto: ApplicationFilter = Depends(),
     pagination_params: Params = Depends(),
@@ -27,7 +30,7 @@ async def read_applications(
 
 
 @router.post(
-    path='',
+    path="",
     response_model=ApplicationRead,
     status_code=status.HTTP_201_CREATED,
 )
@@ -39,10 +42,11 @@ async def create_application(
 
 
 @router.delete(
-    path='/{application_id}',
+    path="/{application_id}",
     responses=response.HTTP_404_NOT_FOUND(
-        'Application not found',
-    ) | SuccessfulResponse.schema(),
+        "Application not found",
+    )
+    | SuccessfulResponse.schema(),
 )
 async def delete_application(
     application_id: uuid.UUID,

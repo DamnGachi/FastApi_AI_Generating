@@ -2,8 +2,8 @@ import json
 import os
 
 import pytest
-from internal.app.app import create_app
 
+from internal.app.app import create_app
 from internal.entity.base import Base
 
 os.environ["ENV"] = "test"
@@ -15,7 +15,9 @@ if os.getenv("ENV") not in ["test"]:
 from fastapi.testclient import TestClient
 from loguru import logger
 from sqlalchemy.ext.asyncio import create_async_engine
+
 from internal.config import settings
+
 # from app.core.container import Container
 # from app.main import AppCreator
 # from app.model.post import Post
