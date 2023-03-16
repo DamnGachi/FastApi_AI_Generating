@@ -1,20 +1,17 @@
 import uuid
 from typing import Any
 
-from fastapi import APIRouter
-from fastapi import Depends
-from fastapi import status
-from fastapi_pagination import Page
-from fastapi_pagination import paginate
-from fastapi_pagination import Params
+from fastapi import APIRouter, Depends, status
+from fastapi_pagination import Page, Params, paginate
 
-from internal.dto.application import ApplicationFilter
-from internal.dto.application import ApplicationRead
-from internal.dto.application import BaseApplication
+from internal.dto.application import (
+    ApplicationFilter,
+    ApplicationRead,
+    BaseApplication,
+)
 from internal.entity.application import Application
 from internal.service.application import ApplicationService
-from internal.usecase.utils import response
-from internal.usecase.utils import SuccessfulResponse
+from internal.usecase.utils import SuccessfulResponse, response
 
 router = APIRouter()
 

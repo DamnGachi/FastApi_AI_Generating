@@ -2,12 +2,12 @@ version: '3.9'
 services:
 
   db:
+    image: postgres:latest
     container_name: fastapi_clean_db
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
-    image: postgres:14-alpine
     networks:
       - network
     ports:
@@ -43,6 +43,12 @@ services:
     ports:
       - ${HOST_ADMIN_PORT}:${ADMIN_PORT}
       - ${HOST_BACKEND_PORT}:${BACKEND_PORT}
+  redis:
+    image: redis
+    container_name: redis_cash
+    command: --ports=${ADMIN_PORT}
+    expose:
+      - "127.0.0.1:${HOST_ADMIN_PORT}":
 
 networks:
   network:

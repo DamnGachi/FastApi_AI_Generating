@@ -8,8 +8,8 @@ from internal.controller.amqp.router import rpc_router
 from internal.controller.http.router import api_router
 from internal.usecase.utils.exception_handlers import (
     database_error_handler,
-    http_exception_handler,
     database_not_found_handler,
+    http_exception_handler,
 )
 from pkg.rabbitmq.rpc.client import RPCClient
 from pkg.rabbitmq.rpc.server import RPCServer

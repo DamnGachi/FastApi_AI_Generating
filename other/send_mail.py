@@ -4,7 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from celery.utils.log import get_task_logger
-from config import RECIPIENT_MAIL, SENDER_PASSWORD, SENDER_MAIL
+from config import RECIPIENT_MAIL, SENDER_MAIL, SENDER_PASSWORD
 from main import celery_app
 
 logger = get_task_logger(__name__)
