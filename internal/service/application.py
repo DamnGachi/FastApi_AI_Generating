@@ -1,12 +1,15 @@
+import datetime
 import uuid
 from typing import Sequence
 
 import sqlalchemy as sa
-from fastapi import Depends
-from pytorm.repository import InjectRepository
+from fastapi import Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from internal.dto.application import ApplicationFilter, BaseApplication
+from internal.dto.application import (
+    ApplicationFilter,
+    BaseApplication,
+)
 from internal.entity.application import Application
 from internal.usecase.utils import get_session
 
@@ -16,26 +19,36 @@ class ApplicationService(object):
         self,
         session: AsyncSession = Depends(get_session),
     ) -> None:
-        self.repository = InjectRepository(Application, session)
+        self.session = session
 
     async def create(self, dto: BaseApplication) -> Application:
-        application = self.repository.create(**dto.dict())
-        return await self.repository.save(application)
+        application = Application(**dto.dict())
+        self.session.add(application)
+        await self.session.commit()
+        return application
 
     async def find(self, dto: ApplicationFilter) -> Sequence[Application]:
-        return await self.repository.find(
-            Application.deleted_at.is_(None),
-            Application.phone.contains(dto.phone),
-            Application.email.contains(dto.email),
+        query = (
+            self.session.query(Application)
+            .filter(Application.deleted_at.is_(None))
+            .filter(Application.phone.contains(dto.phone))
+            .filter(Application.email.contains(dto.email))
         )
+        return await query.all()
 
     async def find_one_or_fail(self, application_id: uuid.UUID) -> Application:
-        return await self.repository.find_one_or_fail(
-            Application.deleted_at.is_(None),
-            id=application_id,
+        application = (
+            self.session.query(Application)
+            .filter(Application.deleted_at.is_(None))
+            .filter_by(id=application_id)
+            .one_or_none()
         )
+        if application is None:
+            raise HTTPException(status_code=404, detail="Application not found")
+        return application
 
     async def delete(self, application_id: uuid.UUID) -> Application:
         application = await self.find_one_or_fail(application_id)
-        self.repository.merge(application, deleted_at=sa.func.now())
-        return await self.repository.save(application)
+        application.deleted_at = datetime.utcnow()
+        await self.session.commit()
+        return application

@@ -12,7 +12,6 @@ class ResponseExample(TypedDict):
 
 
 class ResponseSchema(dict):  # noqa: WPS600
-
     def __init__(
         self,
         status_code: int,
@@ -22,15 +21,17 @@ class ResponseSchema(dict):  # noqa: WPS600
         self.example = example
         self.status_code = status_code
         self.description = description
-        super().__init__(self.schema(
-            example=example,
-            status_code=status_code,
-            description=description,
-        ))
+        super().__init__(
+            self.schema(
+                example=example,
+                status_code=status_code,
+                description=description,
+            )
+        )
 
-    def __call__(self, detail: str = '', description: str = ''):
+    def __call__(self, detail: str = "", description: str = ""):
         example = self.example.copy()
-        example['detail'] = detail or example['detail']
+        example["detail"] = detail or example["detail"]
         return self.schema(
             example=example,
             status_code=self.status_code,
@@ -46,10 +47,10 @@ class ResponseSchema(dict):  # noqa: WPS600
     ) -> Dict[int, Dict[str, Any]]:
         return {
             status_code: {
-                'description': description,
-                'content': {
-                    'application/json': {
-                        'example': example,
+                "description": description,
+                "content": {
+                    "application/json": {
+                        "example": example,
                     },
                 },
             },
@@ -57,13 +58,14 @@ class ResponseSchema(dict):  # noqa: WPS600
 
 
 class SuccessfulResponse(JSONResponse):
-
     def __init__(
-        self, status_code: int = status.HTTP_200_OK, **kwargs,
+        self,
+        status_code: int = status.HTTP_200_OK,
+        **kwargs,
     ) -> None:
         kwargs |= {
-            'content': {'successful': True},
-            'status_code': status_code,
+            "content": {"successful": True},
+            "status_code": status_code,
         }
         super().__init__(**kwargs)
 
@@ -71,6 +73,6 @@ class SuccessfulResponse(JSONResponse):
     def schema(cls, status_code: int = status.HTTP_200_OK) -> ResponseSchema:
         return ResponseSchema(
             status_code=status_code,
-            description='Successful Response',
+            description="Successful Response",
             example=ResponseExample(successful=True),
         )

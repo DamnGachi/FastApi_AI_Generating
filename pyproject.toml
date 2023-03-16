@@ -1,14 +1,14 @@
 [tool.poetry]
-name = "fastapi-clean-architecture"
-version = "1.0"
-description = "Clean FastAPI architecture"
+name = "AI Generate"
+version = "0.2"
+description = "FastAPI AI Generating"
 
 license = "MIT"
 
 authors = ["Maxim Bigin <i@flaiers.me>"]
 
 readme = "README.md"
-repository = "https://github.com/flaiers/fastapi-clean-architecture"
+repository = "https://github.com/DamnGachi/FastApi_AI_Generating"
 
 
 [tool.poetry.dependencies]
@@ -25,8 +25,7 @@ fastapi-pagination = "^0.9.3"
 pydantic = {extras = ["email", "dotenv"], version = "^1.10.2"}
 
 alembic = "^1.8.1"
-SQLAlchemy = "^1.4.41"
-pytorm = "^0.1.1"
+SQLAlchemy = "^2.0.6"
 asyncpg = "^0.26.0"
 aio-pika = "^8.2.0"
 psycopg2-binary = "^2.9.3"

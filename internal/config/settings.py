@@ -1,8 +1,14 @@
 import os
-from typing import Any, List, Dict
+from typing import Any, Dict, List
 
 from dotenv import load_dotenv
-from pydantic import AmqpDsn, BaseSettings, AnyHttpUrl, validator, PostgresDsn
+from pydantic import (
+    AmqpDsn,
+    AnyHttpUrl,
+    BaseSettings,
+    PostgresDsn,
+    validator,
+)
 
 load_dotenv()
 
@@ -41,11 +47,6 @@ class Settings(BaseSettings):
 
         raise ValueError(value)
 
-    DB_HOST = os.environ.get("DB_HOST")
-    DB_PORT = os.environ.get("DB_PORT")
-    DB_USER = os.environ.get("DB_USER")
-    DB_NAME = os.environ.get("DB_NAME")
-    DB_PASSWORD = os.environ.get("DB_PASS")
     DATABASE_URI: PostgresDsn | None = None
 
     @validator("DATABASE_URI", pre=True)
@@ -56,21 +57,20 @@ class Settings(BaseSettings):
     ) -> str:
         if isinstance(value, str):
             return value
-
+        DB_HOST = os.environ.get("DB_HOST")
+        DB_PORT = os.environ.get("DB_PORT")
+        DB_USER = os.environ.get("DB_USER")
+        DB_NAME = os.environ.get("DB_NAME")
+        DB_PASSWORD = os.environ.get("DB_PASS")
         return PostgresDsn.build(
             scheme="postgresql+asyncpg",
-            user=values.get("DB_USER"),
-            password=values.get("DB_PASSWORD"),
-            host=values.get("DB_HOST"),
-            port=values.get("DB_PORT"),
-            path="/{0}".format(values.get("DB_NAME")),
+            user=DB_USER,
+            password=DB_PASSWORD,
+            host=DB_HOST,
+            port=DB_PORT,
+            path=f"/{DB_NAME}",
         )
 
-    RABBITMQ_HOST = os.environ.get("RABBITMQ_HOST")
-    RABBITMQ_PORT = os.environ.get("RABBITMQ_PORT")
-    RABBITMQ_NAME = os.environ.get("RABBITMQ_NAME")
-    RABBITMQ_USER = os.environ.get("RABBITMQ_USER")
-    RABBITMQ_PASSWORD = os.environ.get("RABBITMQ_PASSWORD")
     RABBITMQ_URI: AmqpDsn | None = None
 
     @validator("RABBITMQ_URI", pre=True)
@@ -81,14 +81,19 @@ class Settings(BaseSettings):
     ) -> str:
         if isinstance(value, str):
             return value
+        RABBITMQ_HOST = os.environ.get("RABBITMQ_HOST")
+        RABBITMQ_PORT = os.environ.get("RABBITMQ_PORT")
+        RABBITMQ_NAME = os.environ.get("RABBITMQ_NAME")
+        RABBITMQ_USER = os.environ.get("RABBITMQ_USER")
+        RABBITMQ_PASSWORD = os.environ.get("RABBITMQ_PASSWORD")
 
         return AmqpDsn.build(
             scheme="amqp",
-            user=values.get("RABBITMQ_USER"),
-            password=values.get("RABBITMQ_PASSWORD"),
-            host=values.get("RABBITMQ_HOST"),
-            port=values.get("RABBITMQ_PORT"),
-            path="/{0}".format(values.get("RABBITMQ_NAME")),
+            user=RABBITMQ_USER,
+            password=RABBITMQ_PASSWORD,
+            host=RABBITMQ_HOST,
+            port=RABBITMQ_PORT,
+            path=f"/{RABBITMQ_NAME}",
         )
 
     class Config(object):

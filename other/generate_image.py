@@ -1,9 +1,8 @@
 import os
 
-
 import config
 import openai
-from fastapi import APIRouter, UploadFile, File, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks, File, UploadFile
 from fastapi_cache.decorator import cache
 
 ai_router = APIRouter(tags=["AI"])

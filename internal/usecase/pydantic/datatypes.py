@@ -3,7 +3,9 @@ from typing import Any, Callable, ClassVar, Dict, Generator, Pattern
 
 from pydantic.validators import constr_length_validator, str_validator
 
-from internal.usecase.pydantic.validators import validate_phone  # noqa: WPS300
+from internal.usecase.pydantic.validators import (  # noqa: WPS300
+    validate_phone,
+)
 
 CallableGenerator = Generator[Callable[..., Any], None, None]
 
