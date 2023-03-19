@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.10-slim-buster
 
 # Step 1: Setup Environment Variables
 ENV PYTHONUNBUFFERED=1 \

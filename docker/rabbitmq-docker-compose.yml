@@ -7,7 +7,7 @@ services:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
       RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_NAME}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
-    image: rabbitmq:3.10-management-alpine
+    image: rabbitmq:3.11
     networks:
       - network
     ports:

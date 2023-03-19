@@ -1,0 +1,11 @@
+# используем официальный образ Redis
+FROM redis
+
+# копируем конфигурационный файл в контейнер
+COPY redis.conf /usr/local/etc/redis/redis.conf
+
+# открываем порт Redis
+EXPOSE 6379
+
+# запускаем Redis с нашим конфигурационным файлом
+CMD [ "redis-server", "/usr/local/etc/redis/redis.conf" ]

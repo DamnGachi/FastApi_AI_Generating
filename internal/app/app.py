@@ -1,3 +1,4 @@
+from celery import Celery
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import api
@@ -23,6 +24,12 @@ def create_app() -> FastAPI:
         openapi_url="{0}/openapi.json".format(settings.DOCS),
         swagger_ui_parameters=settings.SWAGGER_UI_PARAMETERS,
     )
+    celery_app = Celery("tasks")
+    REDIS_URL = "redis://localhost:6379/0"
+
+    celery_app.conf.broker_read_url = REDIS_URL
+    celery_app.conf.result_backend = REDIS_URL
+
     server = RPCServer(settings.RABBITMQ_URI)
     client = RPCClient(settings.RABBITMQ_URI, app.state)
 
@@ -43,6 +50,7 @@ def create_app() -> FastAPI:
     app.add_exception_handler(DBAPIError, database_error_handler)
     app.add_exception_handler(HTTPException, http_exception_handler)
     app.add_exception_handler(NoResultFound, database_not_found_handler)
+    app.add_event_handler(settings.STARTUP, events.start_redis_cache())
     app.add_event_handler(settings.STARTUP, events.startup_rpc_server(server))
     app.add_event_handler(settings.STARTUP, events.startup_rpc_client(client))
     app.add_event_handler(settings.SHUTDOWN, events.shutdown_rpc_client(client))
