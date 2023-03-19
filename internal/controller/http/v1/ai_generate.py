@@ -1,15 +1,14 @@
-import os
-
-import config
 import openai
 from fastapi import APIRouter, BackgroundTasks, File, UploadFile
 from fastapi_cache.decorator import cache
 
-ai_router = APIRouter(tags=["AI"])
-openai.api_key = config.openai_secret_key
+from internal.config import settings
+
+router = APIRouter(tags=["AI"])
+openai.api_key = settings.SECRET_OPENAI_KEY
 
 
-@ai_router.post("/generate-nigger-image")
+@router.post("/generate-nigger-image")
 @cache(expire=60)
 async def generate_fucking_slaves(prompt: str):
     response = openai.Image.create(
@@ -21,7 +20,7 @@ async def generate_fucking_slaves(prompt: str):
     return response["data"][0]["url"]
 
 
-@ai_router.post("/handly-photoshop")
+@router.post("/handly-photoshop")
 @cache(expire=60)
 async def tiny_dick(
     prompt: str,
@@ -44,7 +43,7 @@ async def tiny_dick(
     return {"message": "background task hasbeen started. Please wait a minute"}
 
 
-# @ai_router.post('/generate-image')
-# async def generate_image_endpoint(background_tasks: BackgroundTasks):
-#     background_tasks.add_task(tiny_dick(prompt,image,mask,size,number))
-#     return {'message': 'Generating image in the background'}
+@router.post("/generate-image")
+async def generate_image_endpoint(background_tasks: BackgroundTasks):
+    background_tasks.add_task(tiny_dick(prompt, image, mask, size, number))
+    return {"message": "Generating image in the background"}

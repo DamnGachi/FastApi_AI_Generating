@@ -1,5 +1,5 @@
-import sqlalchemy as sa
-
+# import sqlalchemy as sa
+from sqlalchemy import Column, String, Text, UniqueConstraint
 from internal.entity import mixin
 from internal.entity.base import Base
 from internal.entity.mixin import TimestampMixin
@@ -10,10 +10,10 @@ class Application(Base):
 
     __table_args__ = {"extend_existing": True}
     (
-        sa.UniqueConstraint("phone"),
-        sa.UniqueConstraint("email"),
+        UniqueConstraint("phone"),
+        UniqueConstraint("email"),
     )
 
-    phone = sa.Column(sa.String(255), index=True, nullable=False)
-    email = sa.Column(sa.String(255), index=True, nullable=False)
-    text = sa.Column(sa.Text, nullable=False)
+    phone = Column(String(255), index=True, nullable=False)
+    email = Column(String(255), index=True, nullable=False)
+    text = Column(Text, nullable=False)

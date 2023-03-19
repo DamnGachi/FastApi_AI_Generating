@@ -6,7 +6,7 @@ services:
     container_name: fastapi_clean_db
     environment:
       POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_DB: ${DB_NAME}
     networks:
       - network
@@ -45,10 +45,11 @@ services:
       - ${HOST_BACKEND_PORT}:${BACKEND_PORT}
   redis:
     image: redis
-    container_name: redis_cash
-    command: --ports=${ADMIN_PORT}
-    expose:
-      - "127.0.0.1:${HOST_ADMIN_PORT}":
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    command: redis-server /usr/local/etc/redis/redis.conf
 
 networks:
   network:

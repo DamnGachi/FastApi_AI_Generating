@@ -44,7 +44,7 @@ run-admin: ## Run admin
 
 .PHONY: run-backend
 run-backend: ## Run backend
-	poetry run gunicorn --reload --bind $(localhost):$(BACKEND_PORT) \
+	poetry run gunicorn --reload --bind $(HOST):$(BACKEND_PORT) \
 	--worker-class uvicorn.workers.UvicornWorker \
 	--workers $(WORKERS) --log-level $(LEVEL) --chdir cmd/app main:app
 

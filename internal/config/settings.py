@@ -21,13 +21,14 @@ class Settings(BaseSettings):
     ADMIN: str = "/admin"
     STARTUP: str = "startup"
     SHUTDOWN: str = "shutdown"
+
     SECRET_KEY = "XXXXXXXXXX"
     FLASK_ADMIN_SWATCH: str = "cerulean"
 
     NAME: str = "FastAPI Clean API"
     VERSION: str = "1.0"
     DESCRIPTION: str = "FastAPI Clean REST API"
-
+    SECRET_OPENAI_KEY: str = os.environ.get("SECRET_OPENAI")
     SWAGGER_UI_PARAMETERS: Dict[str, Any] = {
         "displayRequestDuration": True,
         "filter": True,
