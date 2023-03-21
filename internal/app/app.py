@@ -14,6 +14,7 @@ from internal.usecase.utils.exception_handlers import (
 )
 from pkg.rabbitmq.rpc.client import RPCClient
 from pkg.rabbitmq.rpc.server import RPCServer
+from httpx_oauth.clients.google import GoogleOAuth2
 
 
 def create_app() -> FastAPI:

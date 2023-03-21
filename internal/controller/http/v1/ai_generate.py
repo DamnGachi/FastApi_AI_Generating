@@ -9,12 +9,12 @@ openai.api_key = settings.SECRET_OPENAI_KEY
 
 
 @router.post("/generate-nigger-image")
-@cache(expire=60)
-async def generate_fucking_slaves(prompt: str):
+# @cache(expire=60)
+async def generate_fucking_slaves(pont):
     response = openai.Image.create(
-        prompt=prompt,
+        prompt=pont,
         n=1,
-        size="1920x1080",
+        size="1024x1024",
     )
 
     return response["data"][0]["url"]
@@ -43,7 +43,7 @@ async def tiny_dick(
     return {"message": "background task hasbeen started. Please wait a minute"}
 
 
-@router.post("/generate-image")
-async def generate_image_endpoint(background_tasks: BackgroundTasks):
-    background_tasks.add_task(tiny_dick(prompt, image, mask, size, number))
-    return {"message": "Generating image in the background"}
+# @router.post("/generate-image")
+# async def generate_image_endpoint(background_tasks: BackgroundTasks):
+#     background_tasks.add_task(tiny_dick(prompt, image, mask, size, number))
+#     return {"message": "Generating image in the background"}
