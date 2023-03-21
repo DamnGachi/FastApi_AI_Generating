@@ -50,7 +50,7 @@ run-backend: ## Run backend
 
 .PHONY: migrate-create
 migrate-create: ## Create a new revision file
-	poetry run alembic revision --autogenerate -m $(name)
+	poetry run alembic revision --autogenerate -m "nevers"
 
 .PHONY: migrate-up
 migrate-up: ## Upgrade to a later version
