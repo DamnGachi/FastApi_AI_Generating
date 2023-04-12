@@ -1,6 +1,5 @@
 from fastapi import APIRouter
-
-from internal.api.endpoints import router
+from . import endpoints
 
 api_router = APIRouter()
-api_router.include_router(router, prefix="/v1")
+api_router.include_router(endpoints.router, prefix="/v1")
