@@ -8,7 +8,6 @@ from internal.usecase.utils.exception_handlers import (
     http_exception_handler,
 )
 from sqlalchemy.exc import DBAPIError, NoResultFound
-from fastapi.staticfiles import StaticFiles
 
 
 def create_app() -> FastAPI:
@@ -41,7 +40,6 @@ def create_app() -> FastAPI:
             allow_methods=["*"],
             allow_headers=["*"],
         )
-    # app.mount('/client/src/assets/', StaticFiles(directory='/client/src/assets/'), name='assets')
     app.include_router(api_router, prefix=settings.API)
     app.add_exception_handler(DBAPIError, database_error_handler)
     app.add_exception_handler(HTTPException, http_exception_handler)
