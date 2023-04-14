@@ -1,30 +1,20 @@
-import { Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
-import { ConfigProvider } from "antd";
-import ruRU from "antd/locale/ru_RU";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import MainPage from './pages/MainPage';
+import Gallery from './pages/Gallery';
+import Admin from './pages/Admin';
+import NavBar from './Components/NavBar';
 
-function App() {
-    useEffect(() => {
-        const userId = localStorage.getItem("userId");
-        const userRoleId = localStorage.getItem("userRoleId");
-
-        //   if (userId && userRoleId) {
-        //     appState.setUserId(+userId);
-        //     appState.setUserRoleId(+userRoleId);
-        //   }
-    }, []);
-
+const App = () => {
     return (
-        <div className="app">
-            <ConfigProvider locale={ruRU}>
-                <Routes>
-                    {/* <Route path="/" element={<Home />}></Route>
-                    <Route path="/auth" element={<Auth />}></Route> */}
-                </Routes>
-            </ConfigProvider>
-        </div>
+        <Router>
+            <NavBar />
+            <Routes>
+                <Route path="/" element={<Gallery />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/about" element={<MainPage />} />
+            </Routes>
+        </Router>
     );
-}
-
+};
 
 export default App;

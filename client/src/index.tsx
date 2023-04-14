@@ -1,11 +1,23 @@
-import React from "react";
+import React, { createContext } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import UserStore from "./store/UserStore";
+
+
+interface ContextProps {
+  user: UserStore;
+}
+
+export const Context = createContext<ContextProps>({
+  user: new UserStore(),
+});
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Context.Provider value={{
+    user: new UserStore()
+  }}>
     <App />
-  </React.StrictMode>,
+  </Context.Provider >,
   document.getElementById("root")
 );
