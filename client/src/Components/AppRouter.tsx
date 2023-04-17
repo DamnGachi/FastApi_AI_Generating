@@ -9,7 +9,7 @@ const AppRouter = () => {
 
   console.log(user)
   return (
-    <Router>
+    // <Router>
       <Routes>
         {user._isAuth &&
           authRoutes.map(({ path, Component }) => (
@@ -19,7 +19,7 @@ const AppRouter = () => {
           <Route key={path} path={path} element={<Component />} />
         ))}
       </Routes>
-    </Router>
+    // </Router>
   );
 };
 

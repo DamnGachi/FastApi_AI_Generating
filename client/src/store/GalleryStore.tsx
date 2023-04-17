@@ -5,6 +5,9 @@ type Gallery = {
 }
 
 export default class GalleryStore {
+    setSelectedType(type: any): void {
+        throw new Error('Method not implemented.')
+    }
     _types: Gallery[] = [
         { id: 1, name: 'Refrigerator' },
         { id: 2, name: 'Planet' }
