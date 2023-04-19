@@ -1,39 +1,66 @@
-import { makeAutoObservable } from "mobx"
+import { makeAutoObservable } from "mobx";
 
-type Gallery = {
-    // define the user type here
-}
+export default class DeviceStore {
+  private _types: any[] = [];
+  private _authors: any[] = [];
+  private _devices: any[] = [];
+  private _selectedType: any = {};
+  private _selectedBrand: any = {};
+  private _page: number = 1;
+  private _totalCount: number = 0;
+  private _limit: number = 3;
 
-export default class GalleryStore {
-    setSelectedType(type: any): void {
-        throw new Error('Method not implemented.')
-    }
-    _types: Gallery[] = [
-        { id: 1, name: 'Refrigerator' },
-        { id: 2, name: 'Planet' }
-    ]
-    _authors: Gallery[] = [
-        { id: 1, name: 'x1' },
-        { id: 2, name: 'x2' }
-    ]
-    _photos: Gallery[] = [
-        { id: 1, name: 'Outer Planet', price: 1000, rating: 5, img: '' },
-        { id: 2, name: 'Planet', price: 123, rating: 5, img: '' },
-        { id: 3, name: 'Outer', price: 4, rating: 5, img: '' },
-        { id: 4, name: 'Space', price: 23, rating: 5, img: '' }
-    ]
-    constructor() {
-        makeAutoObservable(this)
-    }
+  constructor() {
+    makeAutoObservable(this);
+  }
 
-    setTypes(value: Gallery[]) {
-        this._types = value
-    }
+  setTypes(types: any[]) {
+    this._types = types;
+  }
+  setAuthors(authors: any[]) {
+    this._authors = authors;
+  }
+  setDevices(devices: any[]) {
+    this._devices = devices;
+  }
 
-    setAuthors(value: Gallery[]) {
-        this._authors = value
-    }
-    setPhotos(value: Gallery[]) {
-        this._photos = value
-    }
+  setSelectedType(type: any) {
+    this.setPage(1);
+    this._selectedType = type;
+  }
+  setSelectedBrand(brand: any) {
+    this.setPage(1);
+    this._selectedBrand = brand;
+  }
+  setPage(page: number) {
+    this._page = page;
+  }
+  setTotalCount(count: number) {
+    this._totalCount = count;
+  }
+
+  get types() {
+    return this._types;
+  }
+  get authors() {
+    return this._authors;
+  }
+  get devices() {
+    return this._devices;
+  }
+  get selectedType() {
+    return this._selectedType;
+  }
+  get selectedBrand() {
+    return this._selectedBrand;
+  }
+  get totalCount() {
+    return this._totalCount;
+  }
+  get page() {
+    return this._page;
+  }
+  get limit() {
+    return this._limit;
+  }
 }

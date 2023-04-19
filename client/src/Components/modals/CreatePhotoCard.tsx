@@ -2,25 +2,30 @@ import React, { useContext, useEffect, useState } from 'react';
 import Modal from "react-bootstrap/Modal";
 import { Button, Dropdown, Form, Row, Col } from "react-bootstrap";
 import { Context } from "../../index";
-import { createPhotoCard, fetchBrands, fetchPhotoCards, fetchTypes } from "../../http/photoCardAPI";
+import { createPhotoCard, fetchAuthors, fetchPhotoCards, fetchTypes } from "../../http/photoCardAPI";
 import { observer } from "mobx-react-lite";
 
 interface CreateTypeProps {
     show: boolean;
     onHide: () => void;
 }
-
+type InfoItem = {
+    title: string;
+    description: string;
+    number: number;
+};
 const CreatePhotoCard = observer(({ show, onHide }: CreateTypeProps) => {
     const { gallery } = useContext(Context)
     const [name, setName] = useState('')
     const [price, setPrice] = useState(0)
-    const [file, setFile] = useState(null)
-    const [info, setInfo] = useState([])
+    const [info, setInfo] = useState<InfoItem[]>([{ title: '', description: '', number: Date.now() }]);
+    const [file, setFile] = useState<File | null>(null);
 
     useEffect(() => {
         fetchTypes().then((data: any) => gallery.setTypes(data))
-        fetchBrands().then((data: any) => gallery.setAuthors(data))
+        fetchAuthors().then((data: any) => gallery.setAuthors(data))
     }, [])
+
 
     const addInfo = () => {
         setInfo([...info, { title: '', description: '', number: Date.now() }])
@@ -32,20 +37,27 @@ const CreatePhotoCard = observer(({ show, onHide }: CreateTypeProps) => {
         setInfo(info.map(i => i.number === number ? { ...i, [key]: value } : i))
     }
 
-    const selectFile = (e: { target: { files: React.SetStateAction<null>[]; }; }) => {
-        setFile(e.target.files[0])
+    const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setFile(e.target.files[0]);
+        }
     }
+    const addgallery = async () => {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('price', `${price}`);
+        formData.append('img', file);
+        formData.append('AuthorId', gallery.selectedBrand.id);
+        formData.append('typeId', gallery.selectedType.id);
+        formData.append('info', JSON.stringify(info));
 
-    const addgallery = () => {
-        const formData = new FormData()
-        formData.append('name', name)
-        formData.append('price', `${price}`)
-        formData.append('img', file)
-        formData.append('brandId', gallery.selectedBrand.id)
-        formData.append('typeId', gallery.selectedType.id)
-        formData.append('info', JSON.stringify(info))
-        CreatePhotoCard(formData).then((data: any) => onHide())
-    }
+        try {
+            const data = await createPhotoCard(formData);
+            onHide();
+        } catch (error) {
+            console.error('Error creating photo card:', error);
+        }
+    };
 
     return (
         <Modal
@@ -74,14 +86,16 @@ const CreatePhotoCard = observer(({ show, onHide }: CreateTypeProps) => {
                         </Dropdown.Menu>
                     </Dropdown>
                     <Dropdown className="mt-2 mb-2">
-                        <Dropdown.Toggle>{gallery.selectedBrand.name || "Выберите тип"}</Dropdown.Toggle>
+                        <Dropdown.Toggle>{gallery.setAuthors.name || "Выберите тип"}</Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {gallery.brands.map((brand: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) =>
+                            {gallery.authors.map((Author: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) =>
+
+
                                 <Dropdown.Item
-                                    onClick={() => gallery.setSelectedBrand(brand)}
-                                    key={brand.id}
+                                    key={Author.id}
+                                    onClick={() => gallery.setAuthors(Author)}
                                 >
-                                    {brand.name}
+                                    {Author.name}
                                 </Dropdown.Item>
                             )}
                         </Dropdown.Menu>

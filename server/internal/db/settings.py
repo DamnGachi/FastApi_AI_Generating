@@ -23,7 +23,7 @@ class Settings(BaseSettings):
 
     SECRET_KEY = "XXXXXXXXXX"
 
-    NAME: str = "Travel messenger API"
+    NAME: str = "AI API"
     VERSION: str = "1.0"
     DESCRIPTION: str = "REST API Documentation"
     SECRET_OPENAI_KEY: str = os.environ.get("SECRET_OPENAI")

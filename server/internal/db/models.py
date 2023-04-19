@@ -7,6 +7,7 @@ from sqlalchemy import (
     Boolean,
     Column,
     DateTime,
+    Float,
     ForeignKey,
     Integer,
     String,
@@ -41,5 +42,19 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
     is_verified: bool = Column(Boolean, default=False, nullable=False)
 
 
+# class TypePhoto(Base):
+#     pass
+
+
 class Post(Base):
-    pass
+    __tablename__ = "posts"
+    price = Column(Float, default=0)
+    info = Column(Text, nullable=True)
+    AuthorId = Column(Integer, ForeignKey(user))
+    filename_photo = Column(String, nullable=False)
+    title = Column(String, nullable=False, unique=False)
+    category_id = Column(Integer, ForeignKey())
+
+
+#     typeId
+#     img
